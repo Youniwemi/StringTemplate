@@ -4,9 +4,9 @@
 [![Packagist](https://img.shields.io/packagist/dm/youniwemi/string-template.svg)](https://packagist.org/packages/youniwemi/string-template/stats)
 
 
-StringTemplate is a very simple string template engine for php. 
+StringTemplate is a very simple string template engine for php (and a fork of nicmart/StringTemplate). 
 
-It allows named and nested substutions as well as conditionnals et custom filters (originaly a fork of nicmart/StringTemplate )"
+It allows named and nested substutions as well as conditionnals et custom filters.
 
 For installing instructions, go to the end of this README.
 
@@ -172,7 +172,7 @@ $engine->render(
 
 And lastly, you can use sprintf formats:
  ```php
-$engine = new Youniwemi\StringTemplate\SprintfEngine;
+$engine = new Youniwemi\StringTemplate\Engine;
 
 //Returns I have 1.2 (1.230000E+0) apples.
     $engine->render(
@@ -186,62 +186,7 @@ $engine = new Youniwemi\StringTemplate\SprintfEngine;
 ```
 
 
-### SprintfEngine (Deprecated)
-You can use a more powerful version of the engine if you want to specify [convertion specifications](http://php.net/manual/en/function.sprintf.php) for placeholders. The conversion syntax is identical to `sprintf` one, you need only to specify the optional parameter after the placeholder name.
-
-Example:
- ```php
-$engine = new Youniwemi\StringTemplate\SprintfEngine;
-
-//Returns I have 1.2 (1.230000E+0) apples.
-    $engine->render(
-        "I have {num%.1f} ({num%.6E}) {fruit}.",
-        [
-            'num' => 1.23,
-            'fruit' => 'apples'
-        ]
-    )
-
-```
-Keep in mind that power comes at a cost: `SprintfEngine` is 3 times slower than `Engine` 
-(although if there are no '%' in the template string then performance is almost the same).
-
-## NestedKeyIterator and NestedKeyArray
-Internally the engine iterates through the value array with the `NestedKeyIterator`. `NestedKeyIterator`
-iterates through multi-dimensional arrays giving as key the imploded keys stack.
-
-It can be useful even if you don't need the Engine. Keep in mind that it is an `RecursiveIteratorIterator`,
-and so you have to pass  a `RecursiveIterator` to its constructor (or, better, a `Youniwemi\StringTemplate\RecursiveArrayOnlyIterator` if you do not want to iterate through objects).
-
-Example:
-```php
-use Youniwemi\StringTemplate\NestedKeyIterator;
-use Youniwemi\StringTemplate\RecursiveArrayOnlyIterator;
-
-$ary = [
-    '1' => 'foo',
-    '2' => [
-        '1' => 'bar',
-        '2' => ['1' => 'fog']
-    ],
-    '3' => [1, 2, 3]
-];
-
-$iterator = new NestedKeyIterator(new RecursiveArrayIterator($ary));
-
-foreach ($iterator as $key => $value)
-    echo "$key: $value\n";
-
-// Prints
-// 1: foo
-// 2.1: bar
-// 2.2.1: fog
-// 3.0: 1
-// 3.1: 2
-// 3.2: 3
-
-```
-### NestedKeyArray
+## NestedKeyArray
 In addition to iteration with nested keys, the library offers a class that allows you to access 
 a multidimensional array with flatten nested keys as the ones seen above. It's called `NestedKeyArray`.
 
