@@ -100,12 +100,19 @@ class EngineTest extends TestCase
             )
         );
 
-        // test multiline
+    }
+
+    public function testRenderWithConditionInMultipleLinesShouldNotAddExtraLine()
+    {
+        $engine = new Engine();
+
+        // test multiline (watch out with indentation)
         $this->assertEquals(
-            "Oh! Them\n",
+            "Oh! Them",
             $engine->render(
                 "Oh! {#name.value}
-                {test}{#else}{#content}Them{/content}\n{/name.value}",
+{test}{#else}{#content}Them{/content}
+{/name.value}",
                 array(
                     'name' => ['value' => false] ,
                     'test' => 'Me',
@@ -114,47 +121,22 @@ class EngineTest extends TestCase
             )
         );
 
-        // an other multiline test
+
         $this->assertEquals(
             "<p>Hello name John,</p>
-<br />
-<br />
-<br />
-<p></p><br />
-<br />
-<br />
-<br />
-<p>007</p>
-<br />
-<p></p>
-<br />
-<br />
-<br />",
+No",
             $engine->render(
                 "<p>Hello name {name},</p>
-<br />
-<br />
-<br />
-<p>{#order}</p><br />
-<br />
-<br />
-<br />
-<p>{order.reference}</p>
-<br />
-<p>{#else}
-No order
-{/order}</p>
-<br />
-<br />
-<br />",
+{#order}
+Yes
+{/order}
+No",
                 array(
-                    'name' => 'John' ,
-                    'order' => ['reference' => '007']
+                    'name' => 'John'
                 )
             )
         );
     }
-
 
 
 
