@@ -6,6 +6,7 @@
  * file that was distributed with this source code.
  *
  * @author Nicolò Martini <nicmartnic@gmail.com>
+ * @author Rahal Aboulfeth <rahal.aboulfeth@gmail.com>
  */
 
 /**
@@ -20,7 +21,7 @@ $ary = array(
     'e' => array('f' => 'g', 'h' => 'i', 'l' => array('m', 'n', 'o' => 'p'))
 );
 
-$iterator = new \StringTemplate\NestedKeyIterator(new \RecursiveArrayIterator($ary));
+$iterator = new \Youniwemi\StringTemplate\NestedKeyIterator(new \RecursiveArrayIterator($ary));
 
 $iterateWithIterator = function (&$ary) use ($iterator) {
     foreach ($iterator as $key => $value) {
@@ -34,28 +35,28 @@ $iterateWithIterator = function (&$ary) use ($iterator) {
  * @param array $keyStack
  */
 $iterateWithoutIterator
-        = function (&$ary, $keyStack = array())
-{
-    global $iterateWithoutIterator;
-    $keyValues = array();
-    foreach ($ary as $key => $value) {
-        if (!is_array($value)) {
-            $nestedKey = implode('.', array_merge($keyStack, array($key)));
-            $keyValues[$nestedKey] = $value;
-        } else {
-            $keyStack2 = $keyStack;
-            $keyStack2[] = $key;
-            $keyValues = array_merge($keyValues, $iterateWithoutIterator($value, $keyStack2));
-        }
-    }
-};
+        = function (&$ary, $keyStack = array()) {
+            global $iterateWithoutIterator;
+            $keyValues = array();
+            foreach ($ary as $key => $value) {
+                if (!is_array($value)) {
+                    $nestedKey = implode('.', array_merge($keyStack, array($key)));
+                    $keyValues[$nestedKey] = $value;
+                } else {
+                    $keyStack2 = $keyStack;
+                    $keyStack2[] = $key;
+                    $keyValues = array_merge($keyValues, $iterateWithoutIterator($value, $keyStack2));
+                }
+            }
+        };
 
-function benchmark($f, $ary, $title = '', $iterations = 10000 )
+function benchmark($f, $ary, $title = '', $iterations = 10000)
 {
     echo '<br><b>', $title, '</b><br>';
     $start = microtime(true);
-    for ($i = 0; $i < $iterations; $i++)
+    for ($i = 0; $i < $iterations; $i++) {
         $f($ary);
+    }
     $time = microtime(true) - $start;
     echo 'Time: ', $time, '<br>';
     echo 'Average: ', $time / $iterations, '<br>';

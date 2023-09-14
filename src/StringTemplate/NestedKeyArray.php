@@ -7,13 +7,14 @@
  * file that was distributed with this source code.
  *
  * @author Nicolò Martini <nicmartnic@gmail.com>
+ * @author Rahal Aboulfeth <rahal.aboulfeth@gmail.com>
  */
 
-namespace StringTemplate;
+namespace Youniwemi\StringTemplate;
 
 use Closure;
 
-class NestedKeyArray implements \ArrayAccess, \IteratorAggregate
+class NestedKeyArray implements \ArrayAccess
 {
     private $array;
     private $keySeparator;
@@ -26,14 +27,6 @@ class NestedKeyArray implements \ArrayAccess, \IteratorAggregate
     {
         $this->array = $array;
         $this->keySeparator = $keySeparator;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator(): \Traversable
-    {
-        return new NestedKeyIterator(new RecursiveArrayOnlyIterator($this->array));
     }
 
     /**

@@ -6,6 +6,7 @@
  * file that was distributed with this source code.
  *
  * @author Nicolò Martini <nicmartnic@gmail.com>
+ * @author Rahal Aboulfeth <rahal.aboulfeth@gmail.com>
  */
 
 /**
@@ -13,7 +14,7 @@
  */
 include 'vendor/autoload.php';
 
-$engine = new \StringTemplate\Engine();
+$engine = new \Youniwemi\StringTemplate\Engine();
 $template = "These are {foo} and {bar}. Those are {goo.b} and {goo.v}  {goo.e%E} %";
 $vars = array(
     'foo' => 'bar',
@@ -24,23 +25,9 @@ $replace = function () use ($engine, $template, $vars) {
     $engine->render($template, $vars);
 };
 
-$engineSprintf = new \StringTemplate\SprintfEngine();
-$replaceSprintf = function () use ($engineSprintf, $template, $vars) {
-    $engineSprintf->render($template, $vars);
-};
-
-$templateSprintf = "These are %s and %s. Those are %s and %s";
-$varsSprintf = array(
-    'bar', 'friend', 'b', 'd'
-);
-
-$sprintf = function () use ($template, $varsSprintf) {
-    $args = array_merge(array($template), $varsSprintf);
-    call_user_func_array('sprintf', $args);
-};
 
 $varsSearch = array(
-    'foo', 'baz', 'goo.a', 'goo.c' , 'goo.e%E'
+    '{foo}', '{baz}', '{goo.a}', '{goo.c}' , '{goo.e%E}'
 );
 $varsReplace = array(
     'bar', 'friend', 'b', 'd' , '12.4'
@@ -71,6 +58,4 @@ function benchmark($f, $title = '', $iterations = 100000)
 }
 
 benchmark($replace, 'Engine benchmark');
-benchmark($replaceSprintf, 'Engine Sprintf benchmark');
-//benchmark($sprintf, 'Sprintf benchmark');
 benchmark($strReplace, 'StrReplace benchmark');

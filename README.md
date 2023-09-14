@@ -1,15 +1,14 @@
 # StringTemplate 
-[![Build Status](https://github.com/nicmart/StringTemplate/actions/workflows/php.yml/badge.svg?branch=master)](https://github.com/nicmart/StringTemplate/actions/workflows/php.yml)
-[![Packagist](https://img.shields.io/packagist/dt/nicmart/string-template.svg)](https://packagist.org/packages/nicmart/string-template/stats)
-[![Packagist](https://img.shields.io/packagist/dm/nicmart/string-template.svg)](https://packagist.org/packages/nicmart/string-template/stats)
+[![Build Status](https://github.com/youniwemi/StringTemplate/actions/workflows/php.yml/badge.svg?branch=master)](https://github.com/youniwemi/StringTemplate/actions/workflows/php.yml)
+[![Packagist](https://img.shields.io/packagist/dt/youniwemi/string-template.svg)](https://packagist.org/packages/youniwemi/string-template/stats)
+[![Packagist](https://img.shields.io/packagist/dm/youniwemi/string-template.svg)](https://packagist.org/packages/youniwemi/string-template/stats)
 
 
 StringTemplate is a very simple string template engine for php. 
 
-I've written it to have a thing like sprintf, but with named and nested substitutions.
+It allows named and nested substutions as well as conditionnals et custom filters (originaly a fork of nicmart/StringTemplate )"
 
 For installing instructions, go to the end of this README.
-
 
 ## Why
 
@@ -20,13 +19,13 @@ placeholders are named.
 Furthermore, its placeholders can be nested as much as you want (multidimensional arrays allowed).
 
 ## Usage
-Simply create an instance of `StringTemplate\Engine`, and use its `render` method. 
+Simply create an instance of `Youniwemi\StringTemplate\Engine`, and use its `render` method. 
 
 Placeholders are delimited by default by `{` and `}`, but you can specify others through
 the class constructor.
 
 ```php
-$engine = new StringTemplate\Engine;
+$engine = new Youniwemi\StringTemplate\Engine;
 
 //Scalar value: returns "This is my value: nic"
 $engine->render("This is my value: {}", 'nic');
@@ -65,7 +64,7 @@ $engine->render(
 
 You can change the delimiters as you want:
 ```php
-$engine = new StringTemplate\Engine(':', '');
+$engine = new Youniwemi\StringTemplate\Engine(':', '');
 
 //Returns I am Nicolò Martini
 $engine->render(
@@ -80,7 +79,7 @@ $engine->render(
 
 You can use a simple condition:
 ```php
-$engine = new StringTemplate\Engine();
+$engine = new Youniwemi\StringTemplate\Engine();
 
 //Returns Oh! You
 $engine->render(
@@ -95,7 +94,7 @@ $engine->render(
 
 You can use a simple condition with else:
 ```php
-$engine = new StringTemplate\Engine();
+$engine = new Youniwemi\StringTemplate\Engine();
 
 //Returns Oh! My
 $engine->render(
@@ -111,7 +110,7 @@ $engine->render(
 
 You can use a simple filters ( lower|upper|esc_html ):
 ```php
-$engine = new StringTemplate\Engine();
+$engine = new Youniwemi\StringTemplate\Engine();
 
 //Returns Oh! JOHN
 $engine->render(
@@ -124,7 +123,7 @@ $engine->render(
 
 You can add you own filters:
 ```php
-$engine = new StringTemplate\Engine('{','}', [
+$engine = new Youniwemi\StringTemplate\Engine('{','}', [
     'ucfist' => 'ucfirst',
     'esc_html' =>  function($string){ return htmlentities($string, ENT_NOQUOTES); } // override a default filter
 ]);
@@ -141,7 +140,7 @@ $engine->render(
 
 You can use closures a values
 ```php
-$engine = new StringTemplate\Engine();
+$engine = new Youniwemi\StringTemplate\Engine();
 
 //Returns Oh! John
 $engine->render(
@@ -156,7 +155,7 @@ $engine->render(
 
 You can use closures can use the variables
 ```php
-$engine = new StringTemplate\Engine();
+$engine = new Youniwemi\StringTemplate\Engine();
 
 //Returns Oh! John Doe
 $engine->render(
@@ -173,7 +172,7 @@ $engine->render(
 
 And lastly, you can use sprintf formats:
  ```php
-$engine = new StringTemplate\SprintfEngine;
+$engine = new Youniwemi\StringTemplate\SprintfEngine;
 
 //Returns I have 1.2 (1.230000E+0) apples.
     $engine->render(
@@ -192,7 +191,7 @@ You can use a more powerful version of the engine if you want to specify [conver
 
 Example:
  ```php
-$engine = new StringTemplate\SprintfEngine;
+$engine = new Youniwemi\StringTemplate\SprintfEngine;
 
 //Returns I have 1.2 (1.230000E+0) apples.
     $engine->render(
@@ -212,12 +211,12 @@ Internally the engine iterates through the value array with the `NestedKeyIterat
 iterates through multi-dimensional arrays giving as key the imploded keys stack.
 
 It can be useful even if you don't need the Engine. Keep in mind that it is an `RecursiveIteratorIterator`,
-and so you have to pass  a `RecursiveIterator` to its constructor (or, better, a `StringTemplate\RecursiveArrayOnlyIterator` if you do not want to iterate through objects).
+and so you have to pass  a `RecursiveIterator` to its constructor (or, better, a `Youniwemi\StringTemplate\RecursiveArrayOnlyIterator` if you do not want to iterate through objects).
 
 Example:
 ```php
-use StringTemplate\NestedKeyIterator;
-use StringTemplate\RecursiveArrayOnlyIterator;
+use Youniwemi\StringTemplate\NestedKeyIterator;
+use Youniwemi\StringTemplate\RecursiveArrayOnlyIterator;
 
 $ary = [
     '1' => 'foo',
@@ -248,7 +247,7 @@ a multidimensional array with flatten nested keys as the ones seen above. It's c
 
 Example:
 ```php
-use StringTemplate\NestedKeyArray;
+use Youniwemi\StringTemplate\NestedKeyArray;
 
 $ary = [
     '1' => 'foo',
@@ -279,8 +278,7 @@ foreach ($iterator as $key => $value)
 ```
 
 ## Where is it used
-I use StringTemplate in [DomainSpecificQuery](https://github.com/comperio/DomainSpecificQuery) 
-to implement the `Lucene\TemplateExpression` class.
+I use StringTemplate in [Instareza](https://www.instareza.com), a booking system for activities, as well as in [Mail Control](https://www.wpmailcontrol.com) for its newsletter upcoming feature.
 
 ## Install
 
@@ -291,7 +289,7 @@ Just create a composer.json file for your project:
 ```JSON
 {
     "require": {
-        "nicmart/string-template": "~0.1"
+        "youniwemi/string-template": "~0.2"
     }
 }
 ```

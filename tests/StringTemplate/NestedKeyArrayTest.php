@@ -7,12 +7,13 @@
  * file that was distributed with this source code.
  *
  * @author Nicolò Martini <nicmartnic@gmail.com>
+ * @author Rahal Aboulfeth <rahal.aboulfeth@gmail.com>
  */
 
-namespace StringTemplate\Test;
+namespace Youniwemi\StringTemplate\Test;
 
 use PHPUnit\Framework\TestCase;
-use StringTemplate\NestedKeyArray;
+use Youniwemi\StringTemplate\NestedKeyArray;
 
 /**
  * Unit test for NestedKeyArray
@@ -99,21 +100,4 @@ class NestedKeyArrayTest extends TestCase
         $this->assertFalse(isset($this->nestedKeyAry['c.f.gg']));
     }
 
-    public function testIteration()
-    {
-        $flattenAry = array();
-        foreach ($this->nestedKeyAry as $key => $value) {
-            $flattenAry[$key] = $value;
-        }
-
-        $this->assertEquals(
-            array(
-                'a' => 'b',
-                'c.d' => 'e',
-                'c.f.g' => 'h',
-                '2' => 'i'
-            ),
-            $flattenAry
-        );
-    }
 }

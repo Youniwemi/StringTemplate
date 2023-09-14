@@ -3,12 +3,13 @@
  * This file is part of StringTemplate.
  *
  * (c) 2013 Nicolò Martini
+ * (c) 2023 Rahal Aboulfeth
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace StringTemplate;
+namespace Youniwemi\StringTemplate;
 
 /**
  * Class Engine
@@ -33,9 +34,8 @@ class Engine
         'upper' => 'strtoupper',
         'lower' => 'strtolower',
         'esc_html' => 'htmlspecialchars'
-
     ];
-
+    protected $allowedFilters;
 
     /**
      * @param string $left  The left delimiter
@@ -62,7 +62,7 @@ class Engine
         return '/'.$this->left.'#([a-zA-Z0-9_.-]*)'.$this->right. // If {#variable}
             '(.+?)'. // Inside condition tag
             '('.$this->left.'#else'.$this->right.'(.+?))?'. // maybe {#else} tag and condition
-            $this->left.'\/\1'.$this->right.'/si'; // close if {/variable}
+            $this->left.'\/\1'.$this->right.'/s'; // close if {/variable}
         return $reg;
     }
 

@@ -3,15 +3,16 @@
  * This file is part of StringTemplate.
  *
  * (c) 2013 Nicolò Martini
+ * (c) 2023 Rahal Aboulfeth
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace StringTemplate\Test;
+namespace Youniwemi\StringTemplate\Test;
 
 use PHPUnit\Framework\TestCase;
-use StringTemplate\Engine;
+use Youniwemi\StringTemplate\Engine;
 
 /**
  * Unit tests for class Engine
@@ -112,7 +113,50 @@ class EngineTest extends TestCase
                 )
             )
         );
+
+        // an other multiline test
+        $this->assertEquals(
+            "<p>Hello name John,</p>
+<br />
+<br />
+<br />
+<p></p><br />
+<br />
+<br />
+<br />
+<p>007</p>
+<br />
+<p></p>
+<br />
+<br />
+<br />",
+            $engine->render(
+                "<p>Hello name {name},</p>
+<br />
+<br />
+<br />
+<p>{#order}</p><br />
+<br />
+<br />
+<br />
+<p>{order.reference}</p>
+<br />
+<p>{#else}
+No order
+{/order}</p>
+<br />
+<br />
+<br />",
+                array(
+                    'name' => 'John' ,
+                    'order' => ['reference' => '007']
+                )
+            )
+        );
     }
+
+
+
 
     public function testNoRightDelimiter()
     {
@@ -168,23 +212,23 @@ class EngineTest extends TestCase
         );
     }
 
-     public function testClosure()
-     {
-         $engine = new Engine();
-         $this->assertEquals(
-             'Oh John Doe',
-             $engine->render(
-                 'Oh {name}',
-                 [
-                     'first' => 'John',
-                     'last' => 'Doe',
-                     'name' => function ($values) {
-                         return $values['first'].' '.$values['last'];
-                     }
-                 ]
-             )
-         );
-     }
+    public function testClosure()
+    {
+        $engine = new Engine();
+        $this->assertEquals(
+            'Oh John Doe',
+            $engine->render(
+                'Oh {name}',
+                [
+                    'first' => 'John',
+                    'last' => 'Doe',
+                    'name' => function ($values) {
+                        return $values['first'].' '.$values['last'];
+                    }
+                ]
+            )
+        );
+    }
 
 
     public function testModifier()
@@ -253,6 +297,7 @@ class EngineTest extends TestCase
         $engine = new Engine();
         $this->assertEquals('foo', $engine->render('{value}', array('value' => new ObjectMock())));
     }
+
 }
 
 class ObjectMock
