@@ -26,6 +26,8 @@ namespace Youniwemi\StringTemplate;
  */
 class Engine
 {
+    public const maybeLineBreak = '\r?\n?';
+
     protected $left;
     protected $right;
     protected $ifRegex;
@@ -59,10 +61,10 @@ class Engine
      */
     public function ifRegex()
     {
-        return '/'.$this->left.'#([a-zA-Z0-9_.-]*)'.$this->right. // If {#variable}
+        return '/'.$this->left.'#([a-zA-Z0-9_.-]*)'.$this->right.self::maybeLineBreak. // If {#variable}
             '(.+?)'. // Inside condition tag
             '('.$this->left.'#else'.$this->right.'(.+?))?'. // maybe {#else} tag and condition
-            $this->left.'\/\1'.$this->right.'\n?/s'; // close if {/variable}
+            $this->left.'\/\1'.$this->right.self::maybeLineBreak.'/s'; // close if {/variable}
         return $reg;
     }
 
